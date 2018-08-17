@@ -1,4 +1,8 @@
 from datetime import datetime
+from flask import (
+    make_response,
+    abort
+)
 
 
 def get_timestamp():
@@ -7,17 +11,17 @@ def get_timestamp():
 
 # Data to serve the api
 PEOPLE = {
-    "lou": {
+    "Lou": {
         "fname": "Lou",
         "lname": "Ciamp",
         "timestamp": get_timestamp()
     },
-    "hud": {
+    "Hudson": {
         "fname": "Hudson",
         "lname": "Ciamp",
         "timestamp": get_timestamp()
     },
-    "bean": {
+    "Bean": {
         "fname": "Bean",
         "lname": "Ciamp",
         "timestamp": get_timestamp()
@@ -26,7 +30,7 @@ PEOPLE = {
 
 
 # create handler for our read (GET) people
-def read():
+def read_all():
     """
     This function responds to a request for /api/people
     with the complete list of people
@@ -34,3 +38,26 @@ def read():
     :return:    sorted list of people
     """
     return [PEOPLE[key] for key in sorted(PEOPLE.keys())]
+
+
+def create(person):
+    """
+    This function creates a new perosn in the people data structure
+    based on the passed personal data
+    :param person:  person to create
+    :return:    201 on success, 406 on person exists
+    """
+    lname = person.get('lname', None)
+    fname = person.get('fname', None)
+
+    # Does the person already exsist?
+    if fname not in PEOPLE and fname is not None:
+        PEOPLE[fname] = {
+            "fname": fname,
+            "lname": lname,
+            "timestamp": get_timestamp()
+        }
+        return PEOPLE[fname], 201
+
+    else:
+        abort(406, 'Person with first name {fname} already exists'.format(fname=fname))
