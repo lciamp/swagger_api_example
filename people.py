@@ -29,7 +29,7 @@ PEOPLE = {
 }
 
 
-# create handler for our read (GET) people
+# create handler for our read_all (GET) people
 def read_all():
     """
     This function responds to a request for /api/people
@@ -40,6 +40,7 @@ def read_all():
     return [PEOPLE[key] for key in sorted(PEOPLE.keys())]
 
 
+# create handler for our create (POST) people
 def create(person):
     """
     This function creates a new perosn in the people data structure
@@ -61,3 +62,38 @@ def create(person):
 
     else:
         abort(406, 'Person with first name {fname} already exists'.format(fname=fname))
+
+
+# create handler for our read_one (GET) person
+def read_one(fname):
+    """
+    This function responds to a request for /api/people/{fname}
+    with one matching person from people
+    :param fname: first name of person to find
+    :return: person matching first name
+    """
+    # does the person exsist?
+    if fname in PEOPLE:
+        person = PEOPLE[fname]
+        return person
+    else:
+        abort(404, 'Person with first name: {fname} not found'.format(fname=fname))
+
+
+# create handler for our update (PUT) person
+def update(fname, person):
+    """
+    This function updates and exsisting person in the people list
+    :param fname: first name of person to update
+    :param person: perso to update
+    :return: updated person list
+    """
+    if fname in PEOPLE:
+        PEOPLE[fname]['fname'] = person.get('fname')
+        PEOPLE[fname]['lname'] = person.get('lname')
+
+        return PEOPLE[fname]
+    else:
+        abort(404, 'Person with first name: {fname} not found'.format(fname=fname))
+
+
