@@ -30,14 +30,17 @@ PEOPLE = {
 
 
 # create handler for our read_all (GET) people
-def read_all():
+def read_all(length=len(PEOPLE), offset=0):
     """
     This function responds to a request for /api/people
     with the complete list of people
 
+    :param length: number of people to return from list
+    :param offset: offset to start the list
     :return:    sorted list of people
     """
-    return [PEOPLE[key] for key in sorted(PEOPLE.keys())]
+
+    return [PEOPLE[key] for key in sorted(PEOPLE.keys())][offset:length]
 
 
 # create handler for our create (POST) people
