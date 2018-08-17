@@ -83,7 +83,7 @@ def read_one(fname):
 # create handler for our update (PUT) person
 def update(fname, person):
     """
-    This function updates and exsisting person in the people list
+    This function updates an existing person in the people list
     :param fname: first name of person to update
     :param person: perso to update
     :return: updated person list
@@ -97,3 +97,15 @@ def update(fname, person):
         abort(404, 'Person with first name: {fname} not found'.format(fname=fname))
 
 
+# create handler for out delete (DELETE) person
+def delete(fname):
+    """
+    This function deletes a person from the people list
+    :param fname: first name of person to delete
+    :return: 200 on successful delete, 404 if not found
+    """
+    if fname in PEOPLE:
+        del PEOPLE[fname]
+        return make_response('{fname} successfully deleted'.format(fname=fname))
+    else:
+        abort(404, 'Person with first name: {fname} not found'.format(fname=fname))
