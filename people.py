@@ -30,7 +30,7 @@ PEOPLE = {
 
 
 # create handler for our read_all (GET) people
-def read_all(length=len(PEOPLE), offset=0):
+def read_all(length=None, offset=None):
     """
     This function responds to a request for /api/people
     with the complete list of people
@@ -39,7 +39,6 @@ def read_all(length=len(PEOPLE), offset=0):
     :param offset: offset to start the list
     :return:    sorted list of people
     """
-
     return [PEOPLE[key] for key in sorted(PEOPLE.keys())][offset:length]
 
 
@@ -62,7 +61,6 @@ def create(person):
             "timestamp": get_timestamp()
         }
         return PEOPLE[fname], 201
-
     else:
         abort(406, 'Person with first name {fname} already exists'.format(fname=fname))
 
